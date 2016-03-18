@@ -11,6 +11,7 @@ using System.Web;
 using System.Web.Mvc;
 
 namespace MVCToto.Controllers.Toto {
+    [TotoTimerFilter]
     public class TotoController : Controller {
         #region Init
         private ITotoHome repo;
@@ -26,16 +27,12 @@ namespace MVCToto.Controllers.Toto {
         }
         #endregion
 
-        [TotoTimerFilter]
         public ActionResult Index() {
-            logger.Log( "Index metódus kezdete." );
-            logger.Log( "Index metódus vége." );
             return View();
         }
 
-        [TotoTimerFilter]
         public ActionResult Generate() {
-           // ViewBag.BaseTipps = BaseTippKeyValuePair.BASETIPP_ToKeyValuePairs();
+            // ViewBag.BaseTipps = BaseTippKeyValuePair.BASETIPP_ToKeyValuePairs();
 
             var session = System.Web.HttpContext.Current.Session;
             repo.SetAlaptipp( session["alaptipp"] as TotoAlapTipp );
@@ -43,7 +40,6 @@ namespace MVCToto.Controllers.Toto {
             return View( repo.GetAlaptipp() );
         }
 
-        [TotoTimerFilter]
         [HttpPost]
         public ActionResult Generate( FormCollection coll ) {
             //ViewBag.BaseTipps = BaseTippKeyValuePair.BASETIPP_ToKeyValuePairs();
@@ -58,6 +54,8 @@ namespace MVCToto.Controllers.Toto {
                         var session = System.Web.HttpContext.Current.Session;
                         session["tippSor"] = tippSor;
                         session["alaptipp"] = alaptipp;
+                        session["aktPage"] = 1;
+                        session["maxPage"] = (int) (tippSor.TippSor.Count / TotoConst.PAGECOUNT+ 1);
 
                         return RedirectToAction( "Filter" );
 
@@ -75,19 +73,44 @@ namespace MVCToto.Controllers.Toto {
             }
         }
 
-        [TotoTimerFilter]
         public ActionResult Filter() {
             var session = System.Web.HttpContext.Current.Session;
-            var tippSor = session["tippSor"];
-
-//            ViewBag.BaseTipps = BaseTippKeyValuePair.BASETIPP_ToKeyValuePairs();
+            var tippSor = (TotoTippSor)session["tippSor"];
+            if(tippSor == null)
+                return RedirectToAction( "Generate" );
+            var aktPage = (int?)session["aktPage"];
+            aktPage = (aktPage == null) ? 1 : aktPage;
+            session["aktPage"]=aktPage;
+            ViewBag.mettol = (aktPage - 1) * TotoConst.PAGECOUNT;
+            ViewBag.meddig = Math.Min( (int)(aktPage * TotoConst.PAGECOUNT), tippSor.TippSor.Count );
 
             return View( tippSor );
         }
 
-        [TotoTimerFilter]
+        public ActionResult Next() {
+            var session = System.Web.HttpContext.Current.Session;
+            var aktPage = (int?)session["aktPage"];
+            var maxPage = (int)session["maxPage"];
+            if(true) {
+
+            }
+            aktPage = (aktPage == null) ? 1 : aktPage+1;
+            session["aktPage"] = aktPage;
+
+            return RedirectToAction( "Filter" );
+        }
+
+        public ActionResult Prev() {
+            var session = System.Web.HttpContext.Current.Session;
+            var aktPage = (int?)session["aktPage"];
+            aktPage = (aktPage == null) ? 1 : aktPage - 1;
+            session["aktPage"] = aktPage;
+
+            return RedirectToAction( "Filter" );
+        }
+
         public ActionResult Test() {
-            return View(new TotoBaseTipp() { Tipp=BASETIPP._1 } );
+            return View( new TotoBaseTipp() { Tipp = BASETIPP._1 } );
         }
 
 
