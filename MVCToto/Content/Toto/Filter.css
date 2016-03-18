@@ -1,0 +1,23 @@
+﻿body {
+}
+
+.demo {
+    border: 1px solid #C0C0C0;
+    border-collapse: collapse;
+    padding: 5px;
+}
+
+    .demo th {
+        border: 1px solid #C0C0C0;
+        padding: 5px;
+        background: #C0C0C0;
+    }
+
+    .demo td {
+        border: 1px solid #C0C0C0;
+        padding: 5px;
+    }
+
+    .demo tr td:first-child {
+        background: #C0C0C0;
+    }

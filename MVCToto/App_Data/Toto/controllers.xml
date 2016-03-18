@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!--<!DOCTYPE controllers SYSTEM @"~/App_Data/controllers.dtd">-->
+<!DOCTYPE controllers SYSTEM "controllers.dtd">
+
+<controllers>
+  <controller>
+    <name>Home</name>
+    <path>MVCToto.Controllers.HomeController</path>
+  </controller>
+  <controller>
+    <name>Toto</name>
+    <path>MVCToto.Controllers.Toto.TotoController</path>
+  </controller>
+</controllers>
