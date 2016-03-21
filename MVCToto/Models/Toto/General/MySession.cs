@@ -4,16 +4,29 @@ using System.Linq;
 using System.Web;
 
 namespace MVCToto.Models.Toto.General {
-    static class MySession {
-        public static T GetSession<T>( string sessionId ) {
-            T val = default( T );
-            var session = System.Web.HttpContext.Current.Session;
 
-            if(session[sessionId] != null) {
-                val = (T)session[sessionId];
+    public static class MySession {
+        public static MyPagination Pagination {
+            get {
+                var pagi = (MyPagination)HttpContext.Current.Session["Pagination"];
+                return (pagi == null) ? new MyPagination() : pagi;
             }
+            set { HttpContext.Current.Session["Pagination"] = value; }
+        }
 
-            return val;
+        public static TotoAlapTipp Alaptipp {
+            get { return (TotoAlapTipp)(HttpContext.Current.Session["Alaptipp"]); }
+            set { HttpContext.Current.Session["Alaptipp"] = value; }
+        }
+
+        public static TotoTippSor Tippsor {
+            get { return (TotoTippSor)(HttpContext.Current.Session["Tippsor"]); }
+            set { HttpContext.Current.Session["Tippsor"] = value; }
+        }
+
+        public static string Error {
+            get { return (string)(HttpContext.Current.Session["Error"]); }
+            set { HttpContext.Current.Session["Error"] = value; }
         }
     }
 }

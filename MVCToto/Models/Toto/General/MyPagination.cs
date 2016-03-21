@@ -13,8 +13,14 @@ namespace MVCToto.Models.Toto.General {
         public int count { get; protected set; }
         public int onePage { get; protected set; }
 
+        public bool FirstEnabled { get; protected set; }
+        public bool PrevEnabled { get; protected set; }
+        public bool NextEnabled { get; protected set; }
+        public bool LastEnabled { get; protected set; }
+
         private int minPage = 1;
         private int maxPage;
+
 
         //count:Ennyi darab van
         //onePage: Egy oldara ennyi
@@ -41,6 +47,11 @@ namespace MVCToto.Models.Toto.General {
         private void CalculateFromPage() {
             start = (actPage - 1) * onePage + 1;
             end = Math.Min( actPage * onePage, count );
+
+            FirstEnabled = actPage != 1;
+            PrevEnabled = actPage != 1;
+            NextEnabled = actPage != maxPage;
+            LastEnabled = actPage != maxPage;
         }
 
         public void Next() {
