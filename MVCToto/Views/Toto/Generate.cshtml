@@ -17,9 +17,9 @@
                 <h3 class="text-danger">ViewBag.ErrorMessage</h3>
             }*@
 
-        @if(ViewData["Error"] != null) {
+        @if(ViewBag.Error != null) {
             <h2 class="text-danger">Hiba!</h2>
-            <h3 class="text-danger">@ViewData["Error"].ToString()</h3>
+            <h3 class="text-danger">@ViewBag.Error</h3>
         }
 
         <table>

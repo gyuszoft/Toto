@@ -2,6 +2,7 @@
 using MVCToto.Models.Interface;
 using MVCToto.Models.Repo;
 using MVCToto.Models.Toto;
+using MVCToto.Models.Toto.General;
 using MVCToto.Models.Toto.Logger;
 using System;
 using System.Collections.Generic;
@@ -11,19 +12,32 @@ using System.Web;
 using System.Web.Mvc;
 
 namespace MVCToto.Controllers.Toto {
+    //TODO: Session wrapper
     [TotoTimerFilter]
     public class TotoController : Controller {
+
         #region Init
+        const string SESSPAGI = "pagination";
+        const string SESSALAPTIPP = "alaptipp";
+        const string SESSTIPPSOR = "tippsor";
+        const string ERROR1 ="Nem jó az alaptipp!";
+        const string ERROR2 ="Fatális hiba (try)!";
+
         private ITotoHome repo;
         private ITotoLogger logger;
-        public TotoController( ITotoLogger logger ) {
-            this.logger = logger;
-            this.repo = new TotoHome();
-        }
+        private MyPagination pagi;
 
-        public TotoController( ITotoLogger logger, ITotoHome repo ) {
+        public TotoController( ITotoLogger logger ):this(logger, new TotoHome()) {}
+
+        public TotoController(ITotoLogger logger, ITotoHome repo ) {
             this.logger = logger;
             this.repo = repo;
+
+            var session = System.Web.HttpContext.Current.Session;
+            pagi = (MyPagination)session[SESSPAGI];
+            if(pagi == null) 
+                pagi = new MyPagination();
+            session[SESSPAGI] = pagi;
         }
         #endregion
 
@@ -35,16 +49,14 @@ namespace MVCToto.Controllers.Toto {
             // ViewBag.BaseTipps = BaseTippKeyValuePair.BASETIPP_ToKeyValuePairs();
 
             var session = System.Web.HttpContext.Current.Session;
-            repo.SetAlaptipp( session["alaptipp"] as TotoAlapTipp );
+            repo.SetAlaptipp( session[SESSALAPTIPP] as TotoAlapTipp );
 
             return View( repo.GetAlaptipp() );
         }
 
         [HttpPost]
         public ActionResult Generate( FormCollection coll ) {
-            //ViewBag.BaseTipps = BaseTippKeyValuePair.BASETIPP_ToKeyValuePairs();
             try {
-                // TODO: Add update logic here
                 if(ModelState.IsValid) {
                     var alaptipp = repo.GetAlaptippFromCollection( coll );
                     if(repo.IsValidAlaptipp()) {
@@ -52,15 +64,17 @@ namespace MVCToto.Controllers.Toto {
                         var tippSor = repo.GenerateAllFromAlaptipp();
 
                         var session = System.Web.HttpContext.Current.Session;
-                        session["tippSor"] = tippSor;
-                        session["alaptipp"] = alaptipp;
-                        session["aktPage"] = 1;
-                        session["maxPage"] = (int) (tippSor.TippSor.Count / TotoConst.PAGECOUNT+ 1);
+                        session[SESSTIPPSOR] = tippSor;
+                        session[SESSALAPTIPP] = alaptipp;
+                        pagi.SetOnePage( TotoConst.PAGECOUNT );
+                        pagi.SetCount( tippSor.TippSor.Count );
+                        pagi.SetActPage( 1 );
+                        session[SESSPAGI] = pagi;
 
                         return RedirectToAction( "Filter" );
 
                     } else {
-                        ViewData["Error"] = "Nem jó az alaptipp!";
+                        ViewData["Error"] = ERROR1;
                         return View( repo.GetAlaptipp() );
                     }
                 } else {
@@ -68,7 +82,7 @@ namespace MVCToto.Controllers.Toto {
                 }
             } catch {
                 //TODO: Kiírni a tényleges hibát is!!
-                ViewData["Error"] = "Fatális hiba (try)!";
+                ViewData["Error"] = ERROR2;
                 return View( TotoFactory.NewTotoAlapTipp() );
             }
         }
@@ -78,41 +92,31 @@ namespace MVCToto.Controllers.Toto {
             var tippSor = (TotoTippSor)session["tippSor"];
             if(tippSor == null)
                 return RedirectToAction( "Generate" );
-            var aktPage = (int?)session["aktPage"];
-            aktPage = (aktPage == null) ? 1 : aktPage;
-            session["aktPage"]=aktPage;
-            ViewBag.mettol = (aktPage - 1) * TotoConst.PAGECOUNT;
-            ViewBag.meddig = Math.Min( (int)(aktPage * TotoConst.PAGECOUNT), tippSor.TippSor.Count );
 
+            ViewBag.Pagination = pagi;
             return View( tippSor );
         }
 
         public ActionResult Next() {
-            var session = System.Web.HttpContext.Current.Session;
-            var aktPage = (int?)session["aktPage"];
-            var maxPage = (int)session["maxPage"];
-            if(true) {
-
-            }
-            aktPage = (aktPage == null) ? 1 : aktPage+1;
-            session["aktPage"] = aktPage;
-
+            pagi.Next();
             return RedirectToAction( "Filter" );
         }
 
         public ActionResult Prev() {
-            var session = System.Web.HttpContext.Current.Session;
-            var aktPage = (int?)session["aktPage"];
-            aktPage = (aktPage == null) ? 1 : aktPage - 1;
-            session["aktPage"] = aktPage;
-
+            pagi.Prev();
+            return RedirectToAction( "Filter" );
+        }
+        public ActionResult First() {
+            pagi.First();
+            return RedirectToAction( "Filter" );
+        }
+        public ActionResult Last() {
+            pagi.Last();
             return RedirectToAction( "Filter" );
         }
 
         public ActionResult Test() {
             return View( new TotoBaseTipp() { Tipp = BASETIPP._1 } );
         }
-
-
     }
 }

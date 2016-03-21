@@ -7,10 +7,24 @@ using System.Reflection;
 using System.Web;
 
 namespace MVCToto.Models.Toto {
+    // Abstract class, csak próba abszolút semmi értelme most :)
+    public abstract class TotoBaseAbstract {
+        private static int _InstanceCount = 0;
+        public int InstanceCount { get { return _InstanceCount; } }
+
+        public TotoBaseAbstract() {
+            _InstanceCount++;
+        }
+        ~TotoBaseAbstract() {
+            _InstanceCount--;
+        }
+    }
+
     public enum BASETIPP { EMPTY, _1, _2, _X }
     //Csak egy tipp, 1 2 x üres lehet
-    public class TotoBaseTipp {
+    public class TotoBaseTipp : TotoBaseAbstract {
         public int Tipp_ID { get; protected set; }
+        public TotoBaseTipp():base() {}
         public BASETIPP Tipp {
             get { return (BASETIPP)Tipp_ID; }
             set { Tipp_ID = (int)value; }
@@ -32,12 +46,12 @@ namespace MVCToto.Models.Toto {
     }
 
     // Egy meccsre a tipp
-    public class TotoTipp {
+    public class TotoTipp : TotoBaseAbstract {
         //Ennyi 1,2 vagy 3 esély a tipp
         public TotoBaseTipp Tipp1 { get; set; }
         public TotoBaseTipp Tipp2 { get; set; }
         public TotoBaseTipp Tipp3 { get; set; }
-        public TotoTipp() {
+        public TotoTipp():base() {
             Tipp1 = TotoFactory.NewBaseTipp();
             Tipp2 = TotoFactory.NewBaseTipp();
             Tipp3 = TotoFactory.NewBaseTipp();
@@ -57,9 +71,9 @@ namespace MVCToto.Models.Toto {
         }
     }
     // Alaptipp, ebből generáljuk le az oszlopokat
-    public class TotoAlapTipp {
+    public class TotoAlapTipp : TotoBaseAbstract {
         public TotoTipp[] AlapTipp { get; set; }
-        public TotoAlapTipp() {
+        public TotoAlapTipp():base() {
             AlapTipp = new TotoTipp[TotoConst.TOTO_SOR + 1];
             for(int i = 1; i < AlapTipp.Length; i++) {
                 AlapTipp[i] = TotoFactory.NewTotoTipp();
@@ -74,9 +88,9 @@ namespace MVCToto.Models.Toto {
     }
 
     // Egy toto oszlop, max 14 lehet
-    public class TotoEgyOszlop {
+    public class TotoEgyOszlop:TotoBaseAbstract {
         public TotoBaseTipp[] Oszlop { get; set; }
-        public TotoEgyOszlop() {
+        public TotoEgyOszlop():base() {
             Oszlop = new TotoBaseTipp[TotoConst.TOTO_SOR + 1];
             for(int i = 1; i < Oszlop.Length; i++) {
                 Oszlop[i] = TotoFactory.NewBaseTipp();
@@ -96,9 +110,9 @@ namespace MVCToto.Models.Toto {
         }
     }
     // Tippsor
-    public class TotoTippSor {
+    public class TotoTippSor:TotoBaseAbstract {
         public List<TotoEgyOszlop> TippSor { get; set; }
-        public TotoTippSor() {
+        public TotoTippSor():base() {
             TippSor = new List<TotoEgyOszlop>();
         }
         public void Clear() {

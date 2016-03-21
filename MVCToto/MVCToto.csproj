@@ -204,6 +204,8 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\Toto\General\MySession.cs" />
+    <Compile Include="Models\Toto\General\MyPagination.cs" />
     <Compile Include="Models\Toto\TotoConst.cs" />
     <Compile Include="Models\Toto\Interface\ITotoHome.cs" />
     <Compile Include="Models\Toto\Repo\TotoHome.cs" />

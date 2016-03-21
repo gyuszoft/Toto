@@ -34,7 +34,7 @@
                 <th>T14</th>
             </tr>
 
-            @for(int i = ViewBag.Mettol; i < ViewBag.Meddig; i++) {
+            @for(int i = ViewBag.Pagination.start-1; i < ViewBag.Pagination.end; i++) {
                 <tr>
                     <td>
                         @(i + 1).
@@ -60,8 +60,8 @@
 <div>
     <hr />
     @Html.ActionLink( "Első", "First" )
-    @Html.ActionLink( "Köv", "Next" )
     @Html.ActionLink( "Előző", "Prev" )
+    @Html.ActionLink( "Köv", "Next" )
     @Html.ActionLink( "Utolsó", "Last" )
     <hr />
     @Html.ActionLink( "Vissza az alaptipphez", "Generate" )
