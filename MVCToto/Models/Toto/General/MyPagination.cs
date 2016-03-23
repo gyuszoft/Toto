@@ -4,15 +4,14 @@ using System.Linq;
 using System.Web;
 
 namespace MVCToto.Models.Toto.General {
-    //public enum PAGE_ACTION { FIRST, NEXT, PREV, LAST };
-
     public class MyPagination {
-        public int start { get; protected set; }
-        public int end { get; protected set; }
-        public int actPage { get; protected set; }
+        private int _start { get; set; }
+        private int _end { get; set; }
+        private int _actPage { get; set; }
         public int count { get; protected set; }
         public int onePage { get; protected set; }
 
+        // TODO: Ezt még meg kell csinálni
         public bool FirstEnabled { get; protected set; }
         public bool PrevEnabled { get; protected set; }
         public bool NextEnabled { get; protected set; }
@@ -21,6 +20,15 @@ namespace MVCToto.Models.Toto.General {
         private int minPage = 1;
         private int maxPage;
 
+        public int GetStart() {
+            return _start;
+        }
+        public int GetEnd() {
+            return _end;
+        }
+        //public int GetActPage() {
+        //    return _actPage;
+        //}
 
         //count:Ennyi darab van
         //onePage: Egy oldara ennyi
@@ -32,6 +40,7 @@ namespace MVCToto.Models.Toto.General {
             this.SetActPage( aktPage );
         }
 
+
         public void SetCount( int count ) {
             this.count = Math.Max( 0, count );
             this.maxPage = (count - 1) / onePage + 1;
@@ -40,25 +49,26 @@ namespace MVCToto.Models.Toto.General {
             this.onePage = onePage;
         }
         public void SetActPage( int actPage ) {
-            this.actPage = Math.Min( Math.Max( actPage, minPage ), maxPage );
+            this._actPage = Math.Min( Math.Max( actPage, minPage ), maxPage );
             CalculateFromPage();
         }
 
-        private void CalculateFromPage() {
-            start = (actPage - 1) * onePage + 1;
-            end = Math.Min( actPage * onePage, count );
 
-            FirstEnabled = actPage != 1;
-            PrevEnabled = actPage != 1;
-            NextEnabled = actPage != maxPage;
-            LastEnabled = actPage != maxPage;
+        private void CalculateFromPage() {
+            _start = (_actPage - 1) * onePage + 1;
+            _end = Math.Min( _actPage * onePage, count );
+
+            FirstEnabled = _actPage != 1;
+            PrevEnabled = _actPage != 1;
+            NextEnabled = _actPage != maxPage;
+            LastEnabled = _actPage != maxPage;
         }
 
         public void Next() {
-            this.SetActPage( this.actPage + 1 );
+            this.SetActPage( this._actPage + 1 );
         }
         public void Prev() {
-            this.SetActPage( this.actPage - 1 );
+            this.SetActPage( this._actPage - 1 );
         }
         public void First() {
             this.SetActPage( 1 );

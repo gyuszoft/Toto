@@ -204,8 +204,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\Toto\General\MySession.cs" />
+    <Compile Include="Models\Toto\TotoSessionFactory.cs" />
     <Compile Include="Models\Toto\General\MyPagination.cs" />
+    <Compile Include="Models\Toto\Interface\ITotoPagination.cs" />
     <Compile Include="Models\Toto\TotoConst.cs" />
     <Compile Include="Models\Toto\Interface\ITotoHome.cs" />
     <Compile Include="Models\Toto\Repo\TotoHome.cs" />
@@ -215,11 +216,12 @@
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\Toto\Logger\DebuggerLogger.cs" />
-    <Compile Include="Models\Toto\Logger\ITotoLogger.cs" />
+    <Compile Include="Models\Toto\Interface\ITotoLogger.cs" />
     <Compile Include="Models\Toto\Logger\SqlLogger.cs" />
     <Compile Include="Models\Toto\TotoBaseClasses.cs" />
     <Compile Include="Models\Toto\TotoContext.cs" />
     <Compile Include="Models\Toto\TotoFactory.cs" />
+    <Compile Include="Models\Toto\TotoPagination.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>

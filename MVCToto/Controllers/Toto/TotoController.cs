@@ -3,6 +3,7 @@ using MVCToto.Models.Interface;
 using MVCToto.Models.Repo;
 using MVCToto.Models.Toto;
 using MVCToto.Models.Toto.General;
+using MVCToto.Models.Toto.Interface;
 using MVCToto.Models.Toto.Logger;
 using System;
 using System.Collections.Generic;
@@ -21,15 +22,14 @@ namespace MVCToto.Controllers.Toto {
 
         private ITotoHome repo;
         private ITotoLogger logger;
-        private MyPagination pagi;
+        private ITotoPagination pagi;
 
-        public TotoController( ITotoLogger logger ):this(logger, new TotoHome()) {}
+        public TotoController( ITotoLogger logger ) : this( logger, new TotoHome(), TotoSessionFactory.Pagination ) { }
 
-        public TotoController(ITotoLogger logger, ITotoHome repo ) {
+        public TotoController( ITotoLogger logger, ITotoHome repo, ITotoPagination pagi ) {
             this.logger = logger;
             this.repo = repo;
-
-            pagi = MySession.Pagination;
+            this.pagi = pagi;
         }
         #endregion
 
@@ -41,7 +41,7 @@ namespace MVCToto.Controllers.Toto {
             // ViewBag.BaseTipps = BaseTippKeyValuePair.BASETIPP_ToKeyValuePairs();
 
             var session = System.Web.HttpContext.Current.Session;
-            repo.SetAlaptipp( MySession.Alaptipp );
+            repo.SetAlaptipp( TotoSessionFactory.Alaptipp );
 
             return View( repo.GetAlaptipp() );
         }
@@ -56,17 +56,17 @@ namespace MVCToto.Controllers.Toto {
                         var tippSor = repo.GenerateAllFromAlaptipp();
 
                         var session = System.Web.HttpContext.Current.Session;
-                        MySession.Tippsor = tippSor;
-                        MySession.Alaptipp = alaptipp;
-                        pagi.SetOnePage( TotoConst.PAGECOUNT );
+                        TotoSessionFactory.Tippsor = tippSor;
+                        TotoSessionFactory.Alaptipp = alaptipp;
+                        pagi.SetOnePage( TotoConst.DEFPAGECOUNT );
                         pagi.SetCount( tippSor.TippSor.Count );
                         pagi.SetActPage( 1 );
-                        MySession.Pagination = pagi;
+                        TotoSessionFactory.Pagination = pagi;
 
                         return RedirectToAction( "Filter" );
 
                     } else {
-                        MySession.Error = ERROR1;
+                        TotoSessionFactory.Error = ERROR1;
                         return View( repo.GetAlaptipp() );
                     }
                 } else {
@@ -74,14 +74,14 @@ namespace MVCToto.Controllers.Toto {
                 }
             } catch {
                 //TODO: Kiírni a tényleges hibát is!!
-                MySession.Error = ERROR2;
+                TotoSessionFactory.Error = ERROR2;
                 return View( TotoFactory.NewTotoAlapTipp() );
             }
         }
 
         public ActionResult Filter() {
             var session = System.Web.HttpContext.Current.Session;
-            var tippSor = MySession.Tippsor;
+            var tippSor = TotoSessionFactory.Tippsor;
             if(tippSor == null)
                 return RedirectToAction( "Generate" );
 

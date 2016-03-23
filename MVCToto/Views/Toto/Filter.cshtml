@@ -34,7 +34,7 @@
                 <th>T14</th>
             </tr>
 
-            @for(int i = ViewBag.Pagination.start-1; i < ViewBag.Pagination.end; i++) {
+            @for(int i = ViewBag.Pagination.GetStart()-1; i < ViewBag.Pagination.GetEnd(); i++) {
                 <tr>
                     <td>
                         @(i + 1).
