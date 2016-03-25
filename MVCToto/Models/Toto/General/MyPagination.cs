@@ -5,76 +5,90 @@ using System.Web;
 
 namespace MVCToto.Models.Toto.General {
     public class MyPagination {
-        private int _start { get; set; }
-        private int _end { get; set; }
-        private int _actPage { get; set; }
-        public int count { get; protected set; }
-        public int onePage { get; protected set; }
+        #region Private
+        private const byte DefaultOnePageCount = 20; //Egy oldalra ennyi sor alapértelmezetten
+        private const byte DefaultXCount = 5; //a minx-maxx ennyi számot tartalmazhat 
 
-        // TODO: Ezt még meg kell csinálni
+        private int _actPage;   // Akt. oldal
+        private int _count;     // Egy az össz darabszám  
+        private int _onePage;   // Egy oldara ennyi
+
+        private const int _minPage = 1;
+        private int _maxPage; //Maximális oldalszám
+
+        private int _minMaxCount = DefaultXCount;
+        #endregion
+
+        public int Start { get; private set; }
+        public int End { get; private set; }
+        public int MinX { get; private set; }
+        public int MaxX { get; private set; }
+
         public bool FirstEnabled { get; protected set; }
         public bool PrevEnabled { get; protected set; }
         public bool NextEnabled { get; protected set; }
         public bool LastEnabled { get; protected set; }
 
-        private int minPage = 1;
-        private int maxPage;
-
-        public int GetStart() {
-            return _start;
+        public MyPagination( int onePage = DefaultOnePageCount ) {
+            SetOnePage( onePage );
         }
-        public int GetEnd() {
-            return _end;
-        }
-        //public int GetActPage() {
-        //    return _actPage;
-        //}
-
-        //count:Ennyi darab van
-        //onePage: Egy oldara ennyi
-        //actPage: Melyik oldalszámra számolja ki a kezdetét és végét 1-től - akármeddig
-        //return: 1 -től kezdi a számozást!!!
-        public MyPagination( int count = 0, int onePage = 20, int aktPage = 1 ) {
-            this.onePage = onePage;
-            this.SetCount( count );
-            this.SetActPage( aktPage );
-        }
-
 
         public void SetCount( int count ) {
-            this.count = Math.Max( 0, count );
-            this.maxPage = (count - 1) / onePage + 1;
+            _count = Math.Max( 0, count );
+            _maxPage = (count - 1) / _onePage + 1;
         }
+
         public void SetOnePage( int onePage ) {
-            this.onePage = onePage;
+            if(onePage > 0) {
+                _onePage = onePage;
+            }
         }
+
         public void SetActPage( int actPage ) {
-            this._actPage = Math.Min( Math.Max( actPage, minPage ), maxPage );
+            _actPage = Math.Min( Math.Max( actPage, _minPage ), _maxPage );
             CalculateFromPage();
         }
 
-
         private void CalculateFromPage() {
-            _start = (_actPage - 1) * onePage + 1;
-            _end = Math.Min( _actPage * onePage, count );
+            Start = (_actPage - 1) * _onePage + 1;
+            End = Math.Min( _actPage * _onePage, _count );
 
             FirstEnabled = _actPage != 1;
             PrevEnabled = _actPage != 1;
-            NextEnabled = _actPage != maxPage;
-            LastEnabled = _actPage != maxPage;
+            NextEnabled = _actPage != _maxPage;
+            LastEnabled = _actPage != _maxPage;
+
+            #region Minx MaxX számolás
+            var xL = (_minMaxCount - 1) / 2;
+            var xR = (_minMaxCount - 1) / 2;
+            xR = xL + xR + 1 == _minMaxCount ? xR : xR + 1;
+            MinX = _actPage - xL;
+            MaxX = _actPage + xR;
+            if(MinX < 0) {
+                MinX = 1;
+                MaxX = _minMaxCount;
+            }
+            if(MaxX > _maxPage) {
+                MaxX = _maxPage;
+                MinX = _maxPage - _minMaxCount;
+            }
+
+            MinX = Math.Max( MinX, 1 );
+            MaxX = Math.Min( MaxX, _maxPage );
+            #endregion
         }
 
+        public void First() {
+            SetActPage( 1 );
+        }
         public void Next() {
-            this.SetActPage( this._actPage + 1 );
+            SetActPage( _actPage + 1 );
         }
         public void Prev() {
-            this.SetActPage( this._actPage - 1 );
-        }
-        public void First() {
-            this.SetActPage( 1 );
+            SetActPage( _actPage - 1 );
         }
         public void Last() {
-            this.SetActPage( this.maxPage );
+            SetActPage( _maxPage );
         }
     }
 }

@@ -9,7 +9,7 @@ using System.Web.Mvc;
 namespace MVCToto.Models.Interface {
     public interface ITotoHome {
         #region alaptipp
-        TotoAlapTipp GetAlaptipp();
+        ITotoAlaptipp GetAlaptipp();
         void SetAlaptipp( TotoAlapTipp alaptipp );
         TotoAlapTipp GetAlaptippFromCollection( FormCollection coll );
         bool IsValidAlaptipp();

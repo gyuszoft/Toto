@@ -24,7 +24,10 @@ namespace MVCToto.Controllers.Toto {
         private ITotoLogger logger;
         private ITotoPagination pagi;
 
-        public TotoController( ITotoLogger logger ) : this( logger, new TotoHome(), TotoSessionFactory.Pagination ) { }
+        public TotoController( ITotoLogger logger )
+            : this( logger,
+                  new TotoHome( TotoFactory.NewTotoAlapTipp() ),
+                  TotoSessionFactory.Pagination ) { }
 
         public TotoController( ITotoLogger logger, ITotoHome repo, ITotoPagination pagi ) {
             this.logger = logger;
@@ -52,7 +55,7 @@ namespace MVCToto.Controllers.Toto {
                 if(ModelState.IsValid) {
                     var alaptipp = repo.GetAlaptippFromCollection( coll );
                     if(repo.IsValidAlaptipp()) {
-                        alaptipp = repo.GetAlaptipp();
+                        //alaptipp = repo.GetAlaptipp();
                         var tippSor = repo.GenerateAllFromAlaptipp();
 
                         var session = System.Web.HttpContext.Current.Session;
@@ -66,7 +69,7 @@ namespace MVCToto.Controllers.Toto {
                         return RedirectToAction( "Filter" );
 
                     } else {
-                        TotoSessionFactory.Error = ERROR1;
+                        ViewBag.Error = ERROR1;
                         return View( repo.GetAlaptipp() );
                     }
                 } else {
@@ -74,7 +77,7 @@ namespace MVCToto.Controllers.Toto {
                 }
             } catch {
                 //TODO: Kiírni a tényleges hibát is!!
-                TotoSessionFactory.Error = ERROR2;
+                ViewBag.Error = ERROR2;
                 return View( TotoFactory.NewTotoAlapTipp() );
             }
         }
@@ -106,8 +109,10 @@ namespace MVCToto.Controllers.Toto {
             pagi.Last();
             return RedirectToAction( "Filter" );
         }
-
-
+        public ActionResult GotoPage( int id ) {
+            pagi.SetActPage( id );
+            return RedirectToAction( "Filter" );
+        }
 
         public ActionResult Test() {
             return View( new TotoBaseTipp() { Tipp = BASETIPP._1 } );

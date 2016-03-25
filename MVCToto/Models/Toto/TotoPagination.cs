@@ -7,46 +7,43 @@ using System.Web;
 
 namespace MVCToto.Models.Toto {
     public class TotoPagination : ITotoPagination {
-        public MyPagination pagi { get; }
+        public MyPagination Pagi { get; }
+
+        public int Start => Pagi.Start;
+        public int End => Pagi.End;
+        public int MinX => Pagi.MinX;
+        public int MaxX => Pagi.MaxX;
 
         public TotoPagination( MyPagination pagi) {
-            this.pagi = pagi;
+            Pagi = pagi;
         }
 
         public void First() {
-            pagi.First();
+            Pagi.First();
         }
 
         public void Last() {
-            pagi.Last();
+            Pagi.Last();
         }
 
         public void Next() {
-            pagi.Next();
+            Pagi.Next();
         }
 
         public void Prev() {
-            pagi.Prev();
+            Pagi.Prev();
         }
 
         public void SetActPage( int actPage ) {
-            pagi.SetActPage( actPage );
+            Pagi.SetActPage( actPage );
         }
 
         public void SetCount( int count ) {
-            pagi.SetCount( count );
+            Pagi.SetCount( count );
         }
 
         public void SetOnePage( int onePage ) {
-            pagi.SetOnePage( onePage );
-        }
-
-        public int GetStart() {
-            return pagi.GetStart();
-        }
-
-        public int GetEnd() {
-            return pagi.GetEnd();
+            Pagi.SetOnePage( onePage );
         }
     }
 }

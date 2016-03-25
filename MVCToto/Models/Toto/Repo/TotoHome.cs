@@ -8,20 +8,26 @@ using System.Web.Mvc;
 
 namespace MVCToto.Models.Repo {
     public class TotoHome : ITotoHome {
-        private TotoAlapTipp _alaptipp;
-        public TotoHome() {
-            _alaptipp = TotoFactory.NewTotoAlapTipp();
-            egyOszlop = TotoFactory.NewTotoEgyOszlop();
-            tippSor = TotoFactory.NewTotoTippSor();
+        private ITotoAlaptipp _alaptipp;
+
+        //Generáláshoz local
+        private TotoEgyOszlop locEgyOszlop;
+        private TotoTippSor locTippSor;
+
+        public TotoHome( ITotoAlaptipp alaptipp) {
+            _alaptipp = alaptipp;
+            //_alaptipp = TotoFactory.NewTotoAlapTipp();
+            locEgyOszlop = TotoFactory.NewTotoEgyOszlop();
+            locTippSor = TotoFactory.NewTotoTippSor();
         }
-        public TotoAlapTipp GetAlaptipp() {
+        public ITotoAlaptipp GetAlaptipp() {
             return _alaptipp;
         }
         public void SetAlaptipp( TotoAlapTipp alaptipp ) {
             if(alaptipp != null)
-                this._alaptipp = alaptipp;
+                _alaptipp = alaptipp;
             else
-                this._alaptipp = TotoFactory.NewTotoAlapTipp();
+                _alaptipp = TotoFactory.NewTotoAlapTipp();
         }
         public TotoAlapTipp GetAlaptippFromCollection( FormCollection coll ) {
             var alaptipp = TotoFactory.NewTotoAlapTipp();
@@ -37,37 +43,35 @@ namespace MVCToto.Models.Repo {
         }
 
         #region Rekurzív generálás
-        private TotoEgyOszlop egyOszlop { get; set; }
-        private TotoTippSor tippSor { get; set; }
 
         public TotoTippSor GenerateAllFromAlaptipp() {
-            tippSor.Clear();
+            locTippSor.Clear();
             GenerateAllFromAlaptipp( 1 );
-            return tippSor;
+            return locTippSor;
         }
 
         private void GenerateAllFromAlaptipp( int aktSor ) {
             if(aktSor == TotoConst.TOTO_SOR + 1) {
                 // Itt van kész egy oszlop
-                tippSor.Add( egyOszlop.Clone() );
+                locTippSor.Add( locEgyOszlop.Clone() );
             } else {
                 if(_alaptipp.AlapTipp[aktSor].Esely == 0) {
-                    egyOszlop.Set( aktSor, TotoFactory.NewBaseTipp(BASETIPP._1) );
+                    locEgyOszlop.Set( aktSor, TotoFactory.NewBaseTipp(BASETIPP._1) );
                     GenerateAllFromAlaptipp( aktSor + 1 );
                 } else {
 
                     for(int i = 0; i < _alaptipp.AlapTipp[aktSor].Esely; i++) {
                         switch(i) {
                             case 0:
-                                egyOszlop.Set(aktSor, _alaptipp.AlapTipp[aktSor].Tipp1 );
+                                locEgyOszlop.Set(aktSor, _alaptipp.AlapTipp[aktSor].Tipp1 );
                                 GenerateAllFromAlaptipp( aktSor + 1 );
                                 break;
                             case 1:
-                                egyOszlop.Set( aktSor, _alaptipp.AlapTipp[aktSor].Tipp2);
+                                locEgyOszlop.Set( aktSor, _alaptipp.AlapTipp[aktSor].Tipp2);
                                 GenerateAllFromAlaptipp( aktSor + 1 );
                                 break;
                             case 2:
-                                egyOszlop.Set( aktSor, _alaptipp.AlapTipp[aktSor].Tipp3);
+                                locEgyOszlop.Set( aktSor, _alaptipp.AlapTipp[aktSor].Tipp3);
                                 GenerateAllFromAlaptipp( aktSor + 1 );
                                 break;
                             default:

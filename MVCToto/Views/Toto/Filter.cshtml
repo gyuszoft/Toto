@@ -34,7 +34,7 @@
                 <th>T14</th>
             </tr>
 
-            @for(int i = ViewBag.Pagination.GetStart()-1; i < ViewBag.Pagination.GetEnd(); i++) {
+            @for(int i = ViewBag.Pagination.Start - 1; i < ViewBag.Pagination.End; i++) {
                 <tr>
                     <td>
                         @(i + 1).
@@ -61,6 +61,9 @@
     <hr />
     @Html.ActionLink( "Első", "First" )
     @Html.ActionLink( "Előző", "Prev" )
+    @for(int i = ViewBag.Pagination.MinX; i <= ViewBag.Pagination.MaxX; i++) {
+        @Html.ActionLink( " "+i, "GotoPage", new { id = i } )
+    }
     @Html.ActionLink( "Köv", "Next" )
     @Html.ActionLink( "Utolsó", "Last" )
     <hr />

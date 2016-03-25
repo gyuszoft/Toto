@@ -70,8 +70,15 @@ namespace MVCToto.Models.Toto {
             }
         }
     }
+
+    #region TotoAlaptipp
+    public interface ITotoAlaptipp {
+        TotoTipp[] AlapTipp { get; set; }
+        void Set( int i, TotoTipp tipp );
+    }
+
     // Alaptipp, ebből generáljuk le az oszlopokat
-    public class TotoAlapTipp : TotoBaseAbstract {
+    public class TotoAlapTipp : TotoBaseAbstract,ITotoAlaptipp {
         public TotoTipp[] AlapTipp { get; set; }
         public TotoAlapTipp():base() {
             AlapTipp = new TotoTipp[TotoConst.TOTO_SOR + 1];
@@ -86,11 +93,13 @@ namespace MVCToto.Models.Toto {
             }
         }
     }
+    #endregion
 
     // Egy toto oszlop, max 14 lehet
     public class TotoEgyOszlop:TotoBaseAbstract {
         public TotoBaseTipp[] Oszlop { get; set; }
-        public TotoEgyOszlop():base() {
+        public TotoEgyOszlop()
+        {
             Oszlop = new TotoBaseTipp[TotoConst.TOTO_SOR + 1];
             for(int i = 1; i < Oszlop.Length; i++) {
                 Oszlop[i] = TotoFactory.NewBaseTipp();
