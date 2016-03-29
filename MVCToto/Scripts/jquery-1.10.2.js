@@ -6810,7 +6810,7 @@ var iframe, getStyles, curCSS,
 	ropacity = /opacity\s*=\s*([^)]*)/,
 	rposition = /^(top|right|bottom|left)$/,
 	// swappable if display is none or starts with table except "table", "table-cell", or "table-caption"
-	// see here for display values: https://developer.mozilla.org/en-US/docs/CSS/display
+	// see here for display values: https://developer.mozilla.org/en-US/docs/CSS/disp
 	rdisplayswap = /^(none|table(?!-c[ea]).+)/,
 	rmargin = /^margin/,
 	rnumsplit = new RegExp( "^(" + core_pnum + ")(.*)$", "i" ),

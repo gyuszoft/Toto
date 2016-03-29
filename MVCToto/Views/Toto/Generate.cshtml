@@ -1,4 +1,4 @@
-﻿@model MVCToto.Models.Toto.TotoAlapTipp
+﻿@model MVCToto.Models.Toto.Interface.ITotoAlaptipp
 
 @{
     ViewBag.Title = "Generate";
@@ -25,9 +25,9 @@
         <table>
             <tr>
                 <th>Sor</th>
-                <th>Tipp1</th>
-                <th>Tipp2</th>
-                <th>Tipp3</th>
+                <th>tipp1</th>
+                <th>tipp2</th>
+                <th>tipp3</th>
             </tr>
             @for(int i = 1; i < Model.AlapTipp.Length; i++) {
                 <tr>

@@ -171,3 +171,13 @@ G:\Portable\Google Drive\webfejl\CSharp\Toto\MVCToto\bin\Autofac.Extras.NHiberna
 G:\Portable\Google Drive\webfejl\CSharp\Toto\MVCToto\bin\Autofac.Integration.Mvc.xml
 G:\Portable\Google Drive\webfejl\CSharp\Toto\MVCToto\bin\Iesi.Collections.xml
 G:\Portable\Google Drive\webfejl\CSharp\Toto\MVCToto\bin\NHibernate.xml
+C:\Portable\Google Drive\webfejl\CSharp\Toto\MVCToto\bin\Autofac.dll
+C:\Portable\Google Drive\webfejl\CSharp\Toto\MVCToto\bin\Autofac.Extras.NHibernate.dll
+C:\Portable\Google Drive\webfejl\CSharp\Toto\MVCToto\bin\Autofac.Integration.Mvc.dll
+C:\Portable\Google Drive\webfejl\CSharp\Toto\MVCToto\bin\Iesi.Collections.dll
+C:\Portable\Google Drive\webfejl\CSharp\Toto\MVCToto\bin\NHibernate.dll
+C:\Portable\Google Drive\webfejl\CSharp\Toto\MVCToto\bin\Autofac.xml
+C:\Portable\Google Drive\webfejl\CSharp\Toto\MVCToto\bin\Autofac.Extras.NHibernate.xml
+C:\Portable\Google Drive\webfejl\CSharp\Toto\MVCToto\bin\Autofac.Integration.Mvc.xml
+C:\Portable\Google Drive\webfejl\CSharp\Toto\MVCToto\bin\Iesi.Collections.xml
+C:\Portable\Google Drive\webfejl\CSharp\Toto\MVCToto\bin\NHibernate.xml

@@ -224,6 +224,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\Toto\Interface\ITotoBaseClasses.cs" />
     <Compile Include="Models\Toto\TotoSessionFactory.cs" />
     <Compile Include="Models\Toto\General\MyPagination.cs" />
     <Compile Include="Models\Toto\Interface\ITotoPagination.cs" />
@@ -313,7 +314,6 @@
     <Content Include="Views\Toto\Index.cshtml" />
     <Content Include="Views\Toto\Generate.cshtml" />
     <Content Include="Views\Toto\Filter.cshtml" />
-    <Content Include="Views\Toto\Test.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

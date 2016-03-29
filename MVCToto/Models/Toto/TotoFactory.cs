@@ -6,7 +6,7 @@ using System.Web;
 namespace MVCToto.Models.Toto {
     public static class TotoFactory {
         public static TotoBaseTipp NewBaseTipp( Basetipp tipp = Basetipp.EMPTY ) {
-            return new TotoBaseTipp() { Tipp = tipp };
+            return new TotoBaseTipp( new TotoBaseTippDisplay()) { Tipp = tipp };
         }
 
         public static TotoTipp NewTotoTipp() {
@@ -22,7 +22,7 @@ namespace MVCToto.Models.Toto {
         }
 
         public static TotoTippSor NewTotoTippSor() {
-            return new TotoTippSor();
+            return new TotoTippSor( new TotoTippsorRepo() );
         }
     }
 }

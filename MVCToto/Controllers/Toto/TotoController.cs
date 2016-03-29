@@ -112,9 +112,5 @@ namespace MVCToto.Controllers.Toto {
             _pagi.SetActPage( id );
             return RedirectToAction( "Filter" );
         }
-
-        public ActionResult Test() {
-            return View( new TotoBaseTipp() { Tipp = Basetipp._1 } );
-        }
     }
 }
