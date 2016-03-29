@@ -7,26 +7,26 @@ using System.Web.Mvc;
 
 namespace MVCToto.Filter {
     public class TotoTimerFilter : ActionFilterAttribute {
-        private Stopwatch asw,rsw;
+        private Stopwatch _asw,_rsw;
         public TotoTimerFilter() {
-            asw = new Stopwatch();
-            rsw = new Stopwatch();
+            _asw = new Stopwatch();
+            _rsw = new Stopwatch();
         }
         public override void OnActionExecuting( ActionExecutingContext filterContext ) {
             // Ez a kettő = asw.Restart()
-            asw.Reset();
-            asw.Start();
+            _asw.Reset();
+            _asw.Start();
         }
         public override void OnResultExecuting( ResultExecutingContext filterContext ) {
-            rsw.Restart();
+            _rsw.Restart();
         }
         public override void OnActionExecuted( ActionExecutedContext filterContext ) {
-            asw.Stop();
+            _asw.Stop();
             base.OnActionExecuted( filterContext );
         }
 
         public override void OnResultExecuted( ResultExecutedContext filterContext ) {
-            rsw.Stop();
+            _rsw.Stop();
 
             string action = filterContext.RouteData.Values["action"] as string;
             var view = filterContext.Result as ViewResult;
@@ -34,9 +34,9 @@ namespace MVCToto.Filter {
             filterContext.HttpContext.Response.Write(
                 string.Format( "<p>Action:{0}: {1} || View:{2}: {3}</p>",
                     action,
-                    asw.Elapsed,
+                    _asw.Elapsed,
                     viewName,
-                    rsw.Elapsed ) );
+                    _rsw.Elapsed ) );
             base.OnResultExecuted( filterContext );
         }
     }

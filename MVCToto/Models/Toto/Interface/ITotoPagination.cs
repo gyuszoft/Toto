@@ -12,14 +12,11 @@ namespace MVCToto.Models.Toto.Interface {
         int MinX { get;}
         int MaxX { get;}
 
-        void SetCount( int count );      //Ennyi az összes
-        void SetOnePage( int onePage );  //Ennyi megy egy oldalra 
-        void SetActPage( int actPage );  //Aktuális oldal
+        //int Count { get; set; }
+        int OnePage { get; set; }
 
-        //int GetStart(); //Ettől
-        //int GetEnd()  ; //Eddig kell kiírni
-        //int GetMinX(); 
-        //int GetMaxX(); 
+        void SetActPage( int actPage );  //Aktuális oldal
+        void SetCount(int count);
 
         void Next(); //Köv oldal
         void Prev(); //Előző oldal

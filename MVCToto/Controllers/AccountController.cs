@@ -425,7 +425,7 @@ namespace MVCToto.Controllers
 
         #region Helpers
         // Used for XSRF protection when adding external logins
-        private const string XsrfKey = "XsrfId";
+        private const string XSRF_KEY = "XsrfId";
 
         private IAuthenticationManager AuthenticationManager
         {
@@ -475,7 +475,7 @@ namespace MVCToto.Controllers
                 var properties = new AuthenticationProperties { RedirectUri = RedirectUri };
                 if (UserId != null)
                 {
-                    properties.Dictionary[XsrfKey] = UserId;
+                    properties.Dictionary[XSRF_KEY] = UserId;
                 }
                 context.HttpContext.GetOwinContext().Authentication.Challenge(properties, LoginProvider);
             }

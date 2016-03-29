@@ -6,13 +6,13 @@ using System.Web.Hosting;
 using System.Xml.Linq;
 
 namespace MVCToto.Models.Shared.Controller {
-    public class MyControllerXMLParser {
-        readonly string filepath;
-        public MyControllerXMLParser( string path = @"~/App_Data/Toto/controllers.xml" ) {
-            filepath = HostingEnvironment.MapPath( path );
+    public class MyControllerXmlParser {
+        readonly string _filepath;
+        public MyControllerXmlParser( string path = @"~/App_Data/Toto/controllers.xml" ) {
+            _filepath = HostingEnvironment.MapPath( path );
         }
         public List<ControllerTypeInfo> Parse() {
-            XDocument doc = XDocument.Load( filepath );
+            XDocument doc = XDocument.Load( _filepath );
             var query = from c in doc.Descendants( "controller" )
                         select new ControllerTypeInfo() {
                             Name = (string)c.Element( "name" ),

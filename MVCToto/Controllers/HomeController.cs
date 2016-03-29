@@ -4,12 +4,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using MVCToto.Models.Toto.Interface;
 
 namespace MVCToto.Controllers {
     public class HomeController : Controller {
-        ITotoLogger logger;
+        ITotoLogger _logger;
         public HomeController( ITotoLogger logger ) {
-            this.logger = logger;
+            this._logger = logger;
         }
 
         public ActionResult Index() {

@@ -6,30 +6,39 @@ using System.Web;
 namespace MVCToto.Models.Toto.General {
     public class MyPagination {
         #region Private
-        private const byte DefaultOnePageCount = 20; //Egy oldalra ennyi sor alapértelmezetten
-        private const byte DefaultXCount = 5; //a minx-maxx ennyi számot tartalmazhat 
+        private const byte DEFAULT_ONE_PAGE_COUNT = 20; //Egy oldalra ennyi sor alapértelmezetten
+        private const byte DEFAULT_X_COUNT = 5; //a minx-maxx ennyi számot tartalmazhat 
 
         private int _actPage;   // Akt. oldal
         private int _count;     // Egy az össz darabszám  
         private int _onePage;   // Egy oldara ennyi
 
-        private const int _minPage = 1;
+        private const int MIN_PAGE = 1;
         private int _maxPage; //Maximális oldalszám
 
-        private int _minMaxCount = DefaultXCount;
+        private int _minMaxCount = DEFAULT_X_COUNT;
         #endregion
 
         public int Start { get; private set; }
         public int End { get; private set; }
         public int MinX { get; private set; }
         public int MaxX { get; private set; }
+/*        public int Count {
+            get { return _count; } 
+            set { SetCount( value);} 
+        }*/
+        public int OnePage {
+            get { return _onePage; }
+            set { SetOnePage( value ); }
+        }
+
 
         public bool FirstEnabled { get; protected set; }
         public bool PrevEnabled { get; protected set; }
         public bool NextEnabled { get; protected set; }
         public bool LastEnabled { get; protected set; }
 
-        public MyPagination( int onePage = DefaultOnePageCount ) {
+        public MyPagination( int onePage = DEFAULT_ONE_PAGE_COUNT ) {
             SetOnePage( onePage );
         }
 
@@ -45,7 +54,7 @@ namespace MVCToto.Models.Toto.General {
         }
 
         public void SetActPage( int actPage ) {
-            _actPage = Math.Min( Math.Max( actPage, _minPage ), _maxPage );
+            _actPage = Math.Min( Math.Max( actPage, MIN_PAGE ), _maxPage );
             CalculateFromPage();
         }
 

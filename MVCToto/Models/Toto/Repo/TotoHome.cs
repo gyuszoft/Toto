@@ -1,25 +1,22 @@
-﻿using MVCToto.Models.Interface;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using MVCToto.Models.Toto;
+﻿using System;
 using System.Web.Mvc;
+using MVCToto.Models.Toto.Interface;
 
-namespace MVCToto.Models.Repo {
+namespace MVCToto.Models.Toto.Repo {
     public class TotoHome : ITotoHome {
         private ITotoAlaptipp _alaptipp;
 
         //Generáláshoz local
-        private TotoEgyOszlop locEgyOszlop;
-        private TotoTippSor locTippSor;
+        private readonly TotoEgyOszlop _locEgyOszlop;
+        private readonly TotoTippSor _locTippSor;
 
-        public TotoHome( ITotoAlaptipp alaptipp) {
+        public TotoHome( ITotoAlaptipp alaptipp ) {
             _alaptipp = alaptipp;
             //_alaptipp = TotoFactory.NewTotoAlapTipp();
-            locEgyOszlop = TotoFactory.NewTotoEgyOszlop();
-            locTippSor = TotoFactory.NewTotoTippSor();
+            _locEgyOszlop = TotoFactory.NewTotoEgyOszlop();
+            _locTippSor = TotoFactory.NewTotoTippSor();
         }
+
         public ITotoAlaptipp GetAlaptipp() {
             return _alaptipp;
         }
@@ -33,9 +30,9 @@ namespace MVCToto.Models.Repo {
             var alaptipp = TotoFactory.NewTotoAlapTipp();
             for(int i = 1; i < TotoConst.TOTO_SOR + 1; i++) {
                 var tipp = TotoFactory.NewTotoTipp();
-                tipp.Tipp1.Tipp = (BASETIPP)Convert.ToInt32( coll["AlapTipp[" + i + "].Tipp1.Tipp"] );
-                tipp.Tipp2.Tipp = (BASETIPP)Convert.ToInt32( coll["AlapTipp[" + i + "].Tipp2.Tipp"] );
-                tipp.Tipp3.Tipp = (BASETIPP)Convert.ToInt32( coll["AlapTipp[" + i + "].Tipp3.Tipp"] );
+                tipp.Tipp1.Tipp = (Basetipp)Convert.ToInt32( coll["AlapTipp[" + i + "].Tipp1.Tipp"] );
+                tipp.Tipp2.Tipp = (Basetipp)Convert.ToInt32( coll["AlapTipp[" + i + "].Tipp2.Tipp"] );
+                tipp.Tipp3.Tipp = (Basetipp)Convert.ToInt32( coll["AlapTipp[" + i + "].Tipp3.Tipp"] );
                 alaptipp.Set( i, tipp );
             }
             SetAlaptipp( alaptipp );
@@ -45,33 +42,33 @@ namespace MVCToto.Models.Repo {
         #region Rekurzív generálás
 
         public TotoTippSor GenerateAllFromAlaptipp() {
-            locTippSor.Clear();
+            _locTippSor.Clear();
             GenerateAllFromAlaptipp( 1 );
-            return locTippSor;
+            return _locTippSor;
         }
 
         private void GenerateAllFromAlaptipp( int aktSor ) {
             if(aktSor == TotoConst.TOTO_SOR + 1) {
                 // Itt van kész egy oszlop
-                locTippSor.Add( locEgyOszlop.Clone() );
+                _locTippSor.Add( _locEgyOszlop.Clone() );
             } else {
                 if(_alaptipp.AlapTipp[aktSor].Esely == 0) {
-                    locEgyOszlop.Set( aktSor, TotoFactory.NewBaseTipp(BASETIPP._1) );
+                    _locEgyOszlop.Set( aktSor, TotoFactory.NewBaseTipp( Basetipp._1 ) );
                     GenerateAllFromAlaptipp( aktSor + 1 );
                 } else {
 
                     for(int i = 0; i < _alaptipp.AlapTipp[aktSor].Esely; i++) {
                         switch(i) {
                             case 0:
-                                locEgyOszlop.Set(aktSor, _alaptipp.AlapTipp[aktSor].Tipp1 );
+                                _locEgyOszlop.Set( aktSor, _alaptipp.AlapTipp[aktSor].Tipp1 );
                                 GenerateAllFromAlaptipp( aktSor + 1 );
                                 break;
                             case 1:
-                                locEgyOszlop.Set( aktSor, _alaptipp.AlapTipp[aktSor].Tipp2);
+                                _locEgyOszlop.Set( aktSor, _alaptipp.AlapTipp[aktSor].Tipp2 );
                                 GenerateAllFromAlaptipp( aktSor + 1 );
                                 break;
                             case 2:
-                                locEgyOszlop.Set( aktSor, _alaptipp.AlapTipp[aktSor].Tipp3);
+                                _locEgyOszlop.Set( aktSor, _alaptipp.AlapTipp[aktSor].Tipp3 );
                                 GenerateAllFromAlaptipp( aktSor + 1 );
                                 break;
                             default:
@@ -89,27 +86,27 @@ namespace MVCToto.Models.Repo {
                 #region Üres tippek eltüntetése
                 switch(tipp.Esely) {
                     case 3:
-                        if(tipp.Tipp1.Tipp == BASETIPP.EMPTY) {
+                        if(tipp.Tipp1.Tipp == Basetipp.EMPTY) {
                             tipp.Tipp1.Tipp = tipp.Tipp2.Tipp;
                             tipp.Tipp2.Tipp = tipp.Tipp3.Tipp;
-                            tipp.Tipp3.Tipp = BASETIPP.EMPTY;
-                            if(tipp.Tipp1.Tipp == BASETIPP.EMPTY) {
+                            tipp.Tipp3.Tipp = Basetipp.EMPTY;
+                            if(tipp.Tipp1.Tipp == Basetipp.EMPTY) {
                                 tipp.Tipp1.Tipp = tipp.Tipp2.Tipp;
-                                tipp.Tipp2.Tipp = BASETIPP.EMPTY;
+                                tipp.Tipp2.Tipp = Basetipp.EMPTY;
                             }
                             _alaptipp.Set( i, tipp );
                         } else {
-                            if(tipp.Tipp2.Tipp == BASETIPP.EMPTY) {
+                            if(tipp.Tipp2.Tipp == Basetipp.EMPTY) {
                                 tipp.Tipp2.Tipp = tipp.Tipp3.Tipp;
-                                tipp.Tipp3.Tipp = BASETIPP.EMPTY;
+                                tipp.Tipp3.Tipp = Basetipp.EMPTY;
                                 _alaptipp.Set( i, tipp );
                             }
                         }
                         break;
                     case 2:
-                        if(tipp.Tipp1.Tipp == BASETIPP.EMPTY) {
+                        if(tipp.Tipp1.Tipp == Basetipp.EMPTY) {
                             tipp.Tipp1.Tipp = tipp.Tipp2.Tipp;
-                            tipp.Tipp2.Tipp = BASETIPP.EMPTY;
+                            tipp.Tipp2.Tipp = Basetipp.EMPTY;
                             _alaptipp.Set( i, tipp );
                         }
                         break;
@@ -119,10 +116,10 @@ namespace MVCToto.Models.Repo {
                 #endregion
 
                 #region Ismétlődések ellenőrzése
-                if((tipp.Tipp1.Tipp == tipp.Tipp2.Tipp || tipp.Tipp1.Tipp == tipp.Tipp3.Tipp) && tipp.Tipp1.Tipp != BASETIPP.EMPTY) {
+                if((tipp.Tipp1.Tipp == tipp.Tipp2.Tipp || tipp.Tipp1.Tipp == tipp.Tipp3.Tipp) && tipp.Tipp1.Tipp != Basetipp.EMPTY) {
                     return false;
                 }
-                if(tipp.Tipp2.Tipp == tipp.Tipp3.Tipp && tipp.Tipp2.Tipp != BASETIPP.EMPTY) {
+                if(tipp.Tipp2.Tipp == tipp.Tipp3.Tipp && tipp.Tipp2.Tipp != Basetipp.EMPTY) {
                     return false;
                 }
                 #endregion

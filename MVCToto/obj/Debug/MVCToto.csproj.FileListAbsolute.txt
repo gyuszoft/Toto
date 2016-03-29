@@ -79,7 +79,6 @@ G:\Portable\Google Drive\webfejl\CSharp\Toto\MVCToto\bin\Microsoft.Owin.Security
 G:\Portable\Google Drive\webfejl\CSharp\Toto\MVCToto\bin\Microsoft.Owin.Security.MicrosoftAccount.xml
 G:\Portable\Google Drive\webfejl\CSharp\Toto\MVCToto\obj\Debug\MVCToto.dll
 G:\Portable\Google Drive\webfejl\CSharp\Toto\MVCToto\obj\Debug\MVCToto.pdb
-G:\Portable\Google Drive\webfejl\CSharp\Toto\MVCToto\obj\Debug\MVCToto.csprojResolveAssemblyReference.cache
 C:\Portable\Google Drive\webfejl\CSharp\Toto\MVCToto\bin\ApplicationInsights.config
 C:\Portable\Google Drive\webfejl\CSharp\Toto\MVCToto\bin\roslyn\csc.exe
 C:\Portable\Google Drive\webfejl\CSharp\Toto\MVCToto\bin\roslyn\Microsoft.Build.Tasks.CodeAnalysis.dll
@@ -162,3 +161,13 @@ C:\Portable\Google Drive\webfejl\CSharp\Toto\MVCToto\bin\Microsoft.Owin.Security
 C:\Portable\Google Drive\webfejl\CSharp\Toto\MVCToto\obj\Debug\MVCToto.csprojResolveAssemblyReference.cache
 C:\Portable\Google Drive\webfejl\CSharp\Toto\MVCToto\obj\Debug\MVCToto.dll
 C:\Portable\Google Drive\webfejl\CSharp\Toto\MVCToto\obj\Debug\MVCToto.pdb
+G:\Portable\Google Drive\webfejl\CSharp\Toto\MVCToto\bin\Autofac.dll
+G:\Portable\Google Drive\webfejl\CSharp\Toto\MVCToto\bin\Autofac.Extras.NHibernate.dll
+G:\Portable\Google Drive\webfejl\CSharp\Toto\MVCToto\bin\Autofac.Integration.Mvc.dll
+G:\Portable\Google Drive\webfejl\CSharp\Toto\MVCToto\bin\Iesi.Collections.dll
+G:\Portable\Google Drive\webfejl\CSharp\Toto\MVCToto\bin\NHibernate.dll
+G:\Portable\Google Drive\webfejl\CSharp\Toto\MVCToto\bin\Autofac.xml
+G:\Portable\Google Drive\webfejl\CSharp\Toto\MVCToto\bin\Autofac.Extras.NHibernate.xml
+G:\Portable\Google Drive\webfejl\CSharp\Toto\MVCToto\bin\Autofac.Integration.Mvc.xml
+G:\Portable\Google Drive\webfejl\CSharp\Toto\MVCToto\bin\Iesi.Collections.xml
+G:\Portable\Google Drive\webfejl\CSharp\Toto\MVCToto\bin\NHibernate.xml

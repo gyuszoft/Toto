@@ -9,35 +9,35 @@ using System.Web;
 namespace MVCToto.Models.Toto {
     // Abstract class, csak próba abszolút semmi értelme most :)
     public abstract class TotoBaseAbstract {
-        private static int _InstanceCount = 0;
-        public int InstanceCount { get { return _InstanceCount; } }
+        private static int _instanceCount = 0;
+        public int InstanceCount { get { return _instanceCount; } }
 
         public TotoBaseAbstract() {
-            _InstanceCount++;
+            _instanceCount++;
         }
         ~TotoBaseAbstract() {
-            _InstanceCount--;
+            _instanceCount--;
         }
     }
 
-    public enum BASETIPP { EMPTY, _1, _2, _X }
+    public enum Basetipp { EMPTY, _1, _2, X }
     //Csak egy tipp, 1 2 x üres lehet
     public class TotoBaseTipp : TotoBaseAbstract {
-        public int Tipp_ID { get; protected set; }
+        public int TippId { get; protected set; }
         public TotoBaseTipp():base() {}
-        public BASETIPP Tipp {
-            get { return (BASETIPP)Tipp_ID; }
-            set { Tipp_ID = (int)value; }
+        public Basetipp Tipp {
+            get { return (Basetipp)TippId; }
+            set { TippId = (int)value; }
         }
         public string Display() {
-            switch((BASETIPP)Tipp_ID) {
-                case BASETIPP.EMPTY:
+            switch((Basetipp)TippId) {
+                case Basetipp.EMPTY:
                     return " ";
-                case BASETIPP._1:
+                case Basetipp._1:
                     return "1";
-                case BASETIPP._2:
+                case Basetipp._2:
                     return "2";
-                case BASETIPP._X:
+                case Basetipp.X:
                     return "X";
                 default:
                     return "?";
@@ -60,11 +60,11 @@ namespace MVCToto.Models.Toto {
         [Range( 0, 3 )]
         public byte Esely {
             get {
-                if(Tipp3.Tipp != BASETIPP.EMPTY)
+                if(Tipp3.Tipp != Basetipp.EMPTY)
                     return 3;
-                if(Tipp2.Tipp != BASETIPP.EMPTY)
+                if(Tipp2.Tipp != Basetipp.EMPTY)
                     return 2;
-                if(Tipp1.Tipp != BASETIPP.EMPTY)
+                if(Tipp1.Tipp != Basetipp.EMPTY)
                     return 1;
                 return 0;
             }
@@ -84,7 +84,7 @@ namespace MVCToto.Models.Toto {
             AlapTipp = new TotoTipp[TotoConst.TOTO_SOR + 1];
             for(int i = 1; i < AlapTipp.Length; i++) {
                 AlapTipp[i] = TotoFactory.NewTotoTipp();
-                AlapTipp[i].Tipp1 = TotoFactory.NewBaseTipp( BASETIPP._1 );
+                AlapTipp[i].Tipp1 = TotoFactory.NewBaseTipp( Basetipp._1 );
             }
         }
         public void Set( [Range( 1, TotoConst.TOTO_SOR + 1 )] int i, TotoTipp tipp ) {

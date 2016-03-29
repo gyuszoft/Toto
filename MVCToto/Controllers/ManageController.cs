@@ -55,12 +55,12 @@ namespace MVCToto.Controllers
         public async Task<ActionResult> Index(ManageMessageId? message)
         {
             ViewBag.StatusMessage =
-                message == ManageMessageId.ChangePasswordSuccess ? "Your password has been changed."
-                : message == ManageMessageId.SetPasswordSuccess ? "Your password has been set."
-                : message == ManageMessageId.SetTwoFactorSuccess ? "Your two-factor authentication provider has been set."
-                : message == ManageMessageId.Error ? "An error has occurred."
-                : message == ManageMessageId.AddPhoneSuccess ? "Your phone number was added."
-                : message == ManageMessageId.RemovePhoneSuccess ? "Your phone number was removed."
+                message == ManageMessageId.CHANGE_PASSWORD_SUCCESS ? "Your password has been changed."
+                : message == ManageMessageId.SET_PASSWORD_SUCCESS ? "Your password has been set."
+                : message == ManageMessageId.SET_TWO_FACTOR_SUCCESS ? "Your two-factor authentication provider has been set."
+                : message == ManageMessageId.ERROR ? "An error has occurred."
+                : message == ManageMessageId.ADD_PHONE_SUCCESS ? "Your phone number was added."
+                : message == ManageMessageId.REMOVE_PHONE_SUCCESS ? "Your phone number was removed."
                 : "";
 
             var userId = User.Identity.GetUserId();
@@ -90,11 +90,11 @@ namespace MVCToto.Controllers
                 {
                     await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
                 }
-                message = ManageMessageId.RemoveLoginSuccess;
+                message = ManageMessageId.REMOVE_LOGIN_SUCCESS;
             }
             else
             {
-                message = ManageMessageId.Error;
+                message = ManageMessageId.ERROR;
             }
             return RedirectToAction("ManageLogins", new { Message = message });
         }
@@ -187,7 +187,7 @@ namespace MVCToto.Controllers
                 {
                     await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
                 }
-                return RedirectToAction("Index", new { Message = ManageMessageId.AddPhoneSuccess });
+                return RedirectToAction("Index", new { Message = ManageMessageId.ADD_PHONE_SUCCESS });
             }
             // If we got this far, something failed, redisplay form
             ModelState.AddModelError("", "Failed to verify phone");
@@ -201,14 +201,14 @@ namespace MVCToto.Controllers
             var result = await UserManager.SetPhoneNumberAsync(User.Identity.GetUserId(), null);
             if (!result.Succeeded)
             {
-                return RedirectToAction("Index", new { Message = ManageMessageId.Error });
+                return RedirectToAction("Index", new { Message = ManageMessageId.ERROR });
             }
             var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
             if (user != null)
             {
                 await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
             }
-            return RedirectToAction("Index", new { Message = ManageMessageId.RemovePhoneSuccess });
+            return RedirectToAction("Index", new { Message = ManageMessageId.REMOVE_PHONE_SUCCESS });
         }
 
         //
@@ -236,7 +236,7 @@ namespace MVCToto.Controllers
                 {
                     await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
                 }
-                return RedirectToAction("Index", new { Message = ManageMessageId.ChangePasswordSuccess });
+                return RedirectToAction("Index", new { Message = ManageMessageId.CHANGE_PASSWORD_SUCCESS });
             }
             AddErrors(result);
             return View(model);
@@ -265,7 +265,7 @@ namespace MVCToto.Controllers
                     {
                         await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
                     }
-                    return RedirectToAction("Index", new { Message = ManageMessageId.SetPasswordSuccess });
+                    return RedirectToAction("Index", new { Message = ManageMessageId.SET_PASSWORD_SUCCESS });
                 }
                 AddErrors(result);
             }
@@ -279,8 +279,8 @@ namespace MVCToto.Controllers
         public async Task<ActionResult> ManageLogins(ManageMessageId? message)
         {
             ViewBag.StatusMessage =
-                message == ManageMessageId.RemoveLoginSuccess ? "The external login was removed."
-                : message == ManageMessageId.Error ? "An error has occurred."
+                message == ManageMessageId.REMOVE_LOGIN_SUCCESS ? "The external login was removed."
+                : message == ManageMessageId.ERROR ? "An error has occurred."
                 : "";
             var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
             if (user == null)
@@ -311,13 +311,13 @@ namespace MVCToto.Controllers
         // GET: /Manage/LinkLoginCallback
         public async Task<ActionResult> LinkLoginCallback()
         {
-            var loginInfo = await AuthenticationManager.GetExternalLoginInfoAsync(XsrfKey, User.Identity.GetUserId());
+            var loginInfo = await AuthenticationManager.GetExternalLoginInfoAsync(XSRF_KEY, User.Identity.GetUserId());
             if (loginInfo == null)
             {
-                return RedirectToAction("ManageLogins", new { Message = ManageMessageId.Error });
+                return RedirectToAction("ManageLogins", new { Message = ManageMessageId.ERROR });
             }
             var result = await UserManager.AddLoginAsync(User.Identity.GetUserId(), loginInfo.Login);
-            return result.Succeeded ? RedirectToAction("ManageLogins") : RedirectToAction("ManageLogins", new { Message = ManageMessageId.Error });
+            return result.Succeeded ? RedirectToAction("ManageLogins") : RedirectToAction("ManageLogins", new { Message = ManageMessageId.ERROR });
         }
 
         protected override void Dispose(bool disposing)
@@ -333,7 +333,7 @@ namespace MVCToto.Controllers
 
 #region Helpers
         // Used for XSRF protection when adding external logins
-        private const string XsrfKey = "XsrfId";
+        private const string XSRF_KEY = "XsrfId";
 
         private IAuthenticationManager AuthenticationManager
         {
@@ -373,13 +373,13 @@ namespace MVCToto.Controllers
 
         public enum ManageMessageId
         {
-            AddPhoneSuccess,
-            ChangePasswordSuccess,
-            SetTwoFactorSuccess,
-            SetPasswordSuccess,
-            RemoveLoginSuccess,
-            RemovePhoneSuccess,
-            Error
+            ADD_PHONE_SUCCESS,
+            CHANGE_PASSWORD_SUCCESS,
+            SET_TWO_FACTOR_SUCCESS,
+            SET_PASSWORD_SUCCESS,
+            REMOVE_LOGIN_SUCCESS,
+            REMOVE_PHONE_SUCCESS,
+            ERROR
         }
 
 #endregion

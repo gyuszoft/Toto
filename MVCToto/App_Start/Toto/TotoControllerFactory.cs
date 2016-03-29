@@ -1,14 +1,14 @@
-﻿using MVCToto.Models.Shared;
-using MVCToto.Models.Shared.Controller;
-using MVCToto.Models.Toto.Logger;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using System.Web.Routing;
 using System.Web.SessionState;
+using MVCToto.Models.Shared.Controller;
+using MVCToto.Models.Toto.Interface;
+using MVCToto.Models.Toto.Logger;
 
-namespace MvcControllerDemo.Toto.App_Start {
+namespace MVCToto.Toto {
     public class TotoControllerFactory : IControllerFactory {
         public IController CreateController( RequestContext requestContext, string controllerName ) {
             if(controllerName == "favico.ico")
@@ -17,7 +17,7 @@ namespace MvcControllerDemo.Toto.App_Start {
             IController controller = null;
             Type controllerType = null;
 
-            MyControllerXMLParser parser = new MyControllerXMLParser();
+            MyControllerXmlParser parser = new MyControllerXmlParser();
             List<ControllerTypeInfo> types = parser.Parse();
 
             ControllerTypeInfo ti = types.FirstOrDefault( t => t.Name == controllerName );

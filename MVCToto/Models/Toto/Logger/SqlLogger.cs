@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Web;
+using MVCToto.Models.Toto.Interface;
 
 namespace MVCToto.Models.Toto.Logger {
     public class SqlLogger : ITotoLogger {

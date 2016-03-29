@@ -4,8 +4,8 @@ using System.Linq;
 using System.Web;
 
 namespace MVCToto.Models.Toto {
-    static class TotoFactory {
-        public static TotoBaseTipp NewBaseTipp( BASETIPP tipp = BASETIPP.EMPTY ) {
+    public static class TotoFactory {
+        public static TotoBaseTipp NewBaseTipp( Basetipp tipp = Basetipp.EMPTY ) {
             return new TotoBaseTipp() { Tipp = tipp };
         }
 

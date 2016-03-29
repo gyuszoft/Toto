@@ -13,6 +13,8 @@ namespace MVCToto.Models.Toto {
         public int End => Pagi.End;
         public int MinX => Pagi.MinX;
         public int MaxX => Pagi.MaxX;
+        //public int Count { get; set; }
+        public int OnePage { get; set; }
 
         public TotoPagination( MyPagination pagi) {
             Pagi = pagi;
@@ -26,6 +28,10 @@ namespace MVCToto.Models.Toto {
             Pagi.Last();
         }
 
+        public void SetCount(int count) {
+            Pagi.SetCount(count);
+        }
+
         public void Next() {
             Pagi.Next();
         }
@@ -36,14 +42,6 @@ namespace MVCToto.Models.Toto {
 
         public void SetActPage( int actPage ) {
             Pagi.SetActPage( actPage );
-        }
-
-        public void SetCount( int count ) {
-            Pagi.SetCount( count );
-        }
-
-        public void SetOnePage( int onePage ) {
-            Pagi.SetOnePage( onePage );
         }
     }
 }

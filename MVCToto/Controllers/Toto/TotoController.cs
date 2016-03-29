@@ -1,6 +1,4 @@
 ﻿using MVCToto.Filter;
-using MVCToto.Models.Interface;
-using MVCToto.Models.Repo;
 using MVCToto.Models.Toto;
 using MVCToto.Models.Toto.General;
 using MVCToto.Models.Toto.Interface;
@@ -11,6 +9,7 @@ using System.Linq;
 using System.Reflection;
 using System.Web;
 using System.Web.Mvc;
+using MVCToto.Models.Toto.Repo;
 
 namespace MVCToto.Controllers.Toto {
     [TotoTimerFilter]
@@ -20,9 +19,9 @@ namespace MVCToto.Controllers.Toto {
         const string ERROR1 ="Nem jó az alaptipp!";
         const string ERROR2 ="Fatális hiba (try)!";
 
-        private ITotoHome repo;
-        private ITotoLogger logger;
-        private ITotoPagination pagi;
+        private ITotoHome _repo;
+        private ITotoLogger _logger;
+        private ITotoPagination _pagi;
 
         public TotoController( ITotoLogger logger )
             : this( logger,
@@ -30,9 +29,9 @@ namespace MVCToto.Controllers.Toto {
                   TotoSessionFactory.Pagination ) { }
 
         public TotoController( ITotoLogger logger, ITotoHome repo, ITotoPagination pagi ) {
-            this.logger = logger;
-            this.repo = repo;
-            this.pagi = pagi;
+            this._logger = logger;
+            this._repo = repo;
+            this._pagi = pagi;
         }
         #endregion
 
@@ -44,33 +43,33 @@ namespace MVCToto.Controllers.Toto {
             // ViewBag.BaseTipps = BaseTippKeyValuePair.BASETIPP_ToKeyValuePairs();
 
             var session = System.Web.HttpContext.Current.Session;
-            repo.SetAlaptipp( TotoSessionFactory.Alaptipp );
+            _repo.SetAlaptipp( TotoSessionFactory.Alaptipp );
 
-            return View( repo.GetAlaptipp() );
+            return View( _repo.GetAlaptipp() );
         }
 
         [HttpPost]
         public ActionResult Generate( FormCollection coll ) {
             try {
                 if(ModelState.IsValid) {
-                    var alaptipp = repo.GetAlaptippFromCollection( coll );
-                    if(repo.IsValidAlaptipp()) {
+                    var alaptipp = _repo.GetAlaptippFromCollection( coll );
+                    if(_repo.IsValidAlaptipp()) {
                         //alaptipp = repo.GetAlaptipp();
-                        var tippSor = repo.GenerateAllFromAlaptipp();
+                        var tippSor = _repo.GenerateAllFromAlaptipp();
 
                         var session = System.Web.HttpContext.Current.Session;
                         TotoSessionFactory.Tippsor = tippSor;
                         TotoSessionFactory.Alaptipp = alaptipp;
-                        pagi.SetOnePage( TotoConst.DEFPAGECOUNT );
-                        pagi.SetCount( tippSor.TippSor.Count );
-                        pagi.SetActPage( 1 );
-                        TotoSessionFactory.Pagination = pagi;
+                        _pagi.OnePage = TotoConst.DEFPAGECOUNT;
+                        _pagi.SetCount( tippSor.TippSor.Count );
+                        _pagi.SetActPage( 1 );
+                        TotoSessionFactory.Pagination = _pagi;
 
                         return RedirectToAction( "Filter" );
 
                     } else {
                         ViewBag.Error = ERROR1;
-                        return View( repo.GetAlaptipp() );
+                        return View( _repo.GetAlaptipp() );
                     }
                 } else {
                     return View( TotoFactory.NewTotoAlapTipp() );
@@ -88,34 +87,34 @@ namespace MVCToto.Controllers.Toto {
             if(tippSor == null)
                 return RedirectToAction( "Generate" );
 
-            ViewBag.Pagination = pagi;
+            ViewBag.Pagination = _pagi;
             return View( tippSor );
         }
 
         public ActionResult Next() {
-            pagi.Next();
+            _pagi.Next();
             return RedirectToAction( "Filter" );
         }
 
         public ActionResult Prev() {
-            pagi.Prev();
+            _pagi.Prev();
             return RedirectToAction( "Filter" );
         }
         public ActionResult First() {
-            pagi.First();
+            _pagi.First();
             return RedirectToAction( "Filter" );
         }
         public ActionResult Last() {
-            pagi.Last();
+            _pagi.Last();
             return RedirectToAction( "Filter" );
         }
         public ActionResult GotoPage( int id ) {
-            pagi.SetActPage( id );
+            _pagi.SetActPage( id );
             return RedirectToAction( "Filter" );
         }
 
         public ActionResult Test() {
-            return View( new TotoBaseTipp() { Tipp = BASETIPP._1 } );
+            return View( new TotoBaseTipp() { Tipp = Basetipp._1 } );
         }
     }
 }

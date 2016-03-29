@@ -48,3 +48,4 @@ g:\Portable\Google Drive\webfejl\CSharp\Toto\MVCToto.Tests\bin\Debug\Microsoft.O
 g:\Portable\Google Drive\webfejl\CSharp\Toto\MVCToto.Tests\bin\Debug\Microsoft.AspNet.Identity.EntityFramework.xml
 g:\Portable\Google Drive\webfejl\CSharp\Toto\MVCToto.Tests\bin\Debug\EntityFramework.xml
 g:\Portable\Google Drive\webfejl\CSharp\Toto\MVCToto.Tests\bin\Debug\Microsoft.Owin.Host.SystemWeb.xml
+G:\Portable\Google Drive\webfejl\CSharp\Toto\MVCToto.Tests\bin\Debug\MVCToto.Tests.dll.config
