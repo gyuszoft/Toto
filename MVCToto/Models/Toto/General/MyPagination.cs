@@ -23,15 +23,11 @@ namespace MVCToto.Models.Toto.General {
         public int End { get; private set; }
         public int MinX { get; private set; }
         public int MaxX { get; private set; }
-/*        public int Count {
-            get { return _count; } 
-            set { SetCount( value);} 
-        }*/
+
         public int OnePage {
             get { return _onePage; }
             set { SetOnePage( value ); }
         }
-
 
         public bool FirstEnabled { get; protected set; }
         public bool PrevEnabled { get; protected set; }
@@ -39,7 +35,7 @@ namespace MVCToto.Models.Toto.General {
         public bool LastEnabled { get; protected set; }
 
         public MyPagination( int onePage = DEFAULT_ONE_PAGE_COUNT ) {
-            SetOnePage( onePage );
+            OnePage = onePage;
         }
 
         public void SetCount( int count ) {
@@ -50,6 +46,7 @@ namespace MVCToto.Models.Toto.General {
         public void SetOnePage( int onePage ) {
             if(onePage > 0) {
                 _onePage = onePage;
+                SetCount(_count); //MaxPage-t ki kell számolni újra
             }
         }
 
@@ -73,11 +70,11 @@ namespace MVCToto.Models.Toto.General {
             xR = xL + xR + 1 == _minMaxCount ? xR : xR + 1;
             MinX = _actPage - xL;
             MaxX = _actPage + xR;
-            if(MinX < 0) {
+            if(MinX <= 0) {
                 MinX = 1;
                 MaxX = _minMaxCount;
             }
-            if(MaxX > _maxPage) {
+            if(MaxX >= _maxPage) {
                 MaxX = _maxPage;
                 MinX = _maxPage - _minMaxCount;
             }

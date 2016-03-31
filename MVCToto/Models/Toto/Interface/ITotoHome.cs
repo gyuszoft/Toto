@@ -2,9 +2,9 @@
 
 namespace MVCToto.Models.Toto.Interface {
     public interface ITotoHome {
-        #region alaptipp
-        ITotoAlaptipp GetAlaptipp();
-        void SetAlaptipp( TotoAlapTipp alaptipp );
+        #region alapTipp
+        ITotoAlapTipp GetAlaptipp();
+        void SetAlaptipp( ITotoAlapTipp alapTipp );
         TotoAlapTipp GetAlaptippFromCollection( FormCollection coll );
         bool IsValidAlaptipp();
         #endregion

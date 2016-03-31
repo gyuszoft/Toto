@@ -13,8 +13,16 @@ namespace MVCToto.Models.Toto {
         public int End => Pagi.End;
         public int MinX => Pagi.MinX;
         public int MaxX => Pagi.MaxX;
-        //public int Count { get; set; }
-        public int OnePage { get; set; }
+
+        public bool FirstEnabled => Pagi.FirstEnabled;
+        public bool PrevEnabled => Pagi.PrevEnabled;
+        public bool NextEnabled => Pagi.NextEnabled;
+        public bool LastEnabled => Pagi.LastEnabled;
+
+        public int OnePage {
+            get { return Pagi.OnePage; }
+            set { Pagi.OnePage = value; }
+        }
 
         public TotoPagination( MyPagination pagi) {
             Pagi = pagi;

@@ -3,12 +3,17 @@ using MVCToto.Models.Toto.General;
 using MVCToto.Models.Toto.Interface;
 
 namespace MVCToto.Models.Toto {
-
     public static class TotoSessionFactory {
+
         public static ITotoPagination Pagination {
             get {
-                var pagi = (TotoPagination)HttpContext.Current.Session["Pagination"];
-                return (pagi == null) ? new TotoPagination(new MyPagination(TotoConst.DEFPAGECOUNT)) : pagi;
+                if (HttpContext.Current != null) {
+                    var pagi = (TotoPagination) HttpContext.Current.Session["Pagination"];
+                    return pagi ?? new TotoPagination(new MyPagination(TotoConst.DEFPAGECOUNT));
+                }
+                else {
+                    return new TotoPagination(new MyPagination(TotoConst.DEFPAGECOUNT));
+                }
             }
             set { HttpContext.Current.Session["Pagination"] = value; }
         }

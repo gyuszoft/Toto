@@ -11,7 +11,7 @@ using MVCToto.Models.Toto.Interface;
 namespace MVCToto.Models.Toto {
     // Abstract class, csak próba abszolút semmi értelme most :)
     public abstract class TotoBaseAbstract {
-        private static int _instanceCount = 0;
+/*        private static int _instanceCount = 0;
         public int InstanceCount { get { return _instanceCount; } }
 
         protected TotoBaseAbstract() {
@@ -19,7 +19,7 @@ namespace MVCToto.Models.Toto {
         }
         ~TotoBaseAbstract() {
             _instanceCount--;
-        }
+        }*/
     }
 
     public enum Basetipp { EMPTY, _1, _2, X }
@@ -27,24 +27,7 @@ namespace MVCToto.Models.Toto {
 
     #region TotoBaseTipp
 
-    public class TotoBaseTippDisplay : ITotoBaseTippDisplay {
-        public string Display( Basetipp tipp ) {
-            switch(tipp) {
-                case Basetipp.EMPTY:
-                    return " ";
-                case Basetipp._1:
-                    return "1";
-                case Basetipp._2:
-                    return "2";
-                case Basetipp.X:
-                    return "X";
-                default:
-                    return "?";
-            }
-        }
-    }
-
-    public class TotoBaseTipp : TotoBaseAbstract {
+   public class TotoBaseTipp : TotoBaseAbstract {
         private int TippId { get; set; }
         public Basetipp Tipp {
             get { return (Basetipp)TippId; }
@@ -92,7 +75,7 @@ namespace MVCToto.Models.Toto {
 
     #region TotoAlaptipp
     // Alaptipp, ebből generáljuk le az oszlopokat
-    public class TotoAlapTipp : TotoBaseAbstract, ITotoAlaptipp {
+    public class TotoAlapTipp : TotoBaseAbstract, ITotoAlapTipp {
         public TotoTipp[] AlapTipp { get; set; }
         public TotoAlapTipp() : base() {
             AlapTipp = new TotoTipp[TotoConst.TOTO_SOR + 1];
@@ -100,11 +83,21 @@ namespace MVCToto.Models.Toto {
                 AlapTipp[i] = TotoFactory.NewTotoTipp();
                 AlapTipp[i].Tipp1 = TotoFactory.NewBaseTipp( Basetipp._1 );
             }
+            Clear();
         }
         public void Set( [Range( 1, TotoConst.TOTO_SOR + 1 )] int i, TotoTipp tipp ) {
             if(i >= 1 && i <= TotoConst.TOTO_SOR) {
                 AlapTipp[i] = tipp;
             }
+        }
+
+        public ITotoAlapTipp Clear() {
+            for(int i = 1; i < AlapTipp.Length; i++) {
+                AlapTipp[i].Tipp1.Tipp = Basetipp._1;
+                AlapTipp[i].Tipp2.Tipp = Basetipp.EMPTY;
+                AlapTipp[i].Tipp3.Tipp = Basetipp.EMPTY;
+            }
+            return this;
         }
     }
     #endregion
@@ -132,18 +125,9 @@ namespace MVCToto.Models.Toto {
         }
     }
 
-    public class TotoTippsorRepo : ITotoTippsor {
-        public void Clear( List<TotoEgyOszlop> list ) {
-            list.Clear();
-        }
-
-        public void Add( List<TotoEgyOszlop> list, TotoEgyOszlop oszlop ) {
-            list.Add( oszlop );
-        }
-    }
-
+   
     public class TotoTippSor : TotoBaseAbstract {
-        private ITotoTippsor _repo;
+        private readonly ITotoTippsor _repo;
         public List<TotoEgyOszlop> TippSor { get; set; }
         public TotoTippSor( ITotoTippsor repo ) : base() {
             _repo = repo;
@@ -151,6 +135,9 @@ namespace MVCToto.Models.Toto {
         }
         public void Clear() {
             _repo.Clear( TippSor );
+        }
+        public void Clear(int n) {
+            _repo.Clear( TippSor,n );
         }
         public void Add( TotoEgyOszlop oszlop ) {
             _repo.Add( TippSor, oszlop );

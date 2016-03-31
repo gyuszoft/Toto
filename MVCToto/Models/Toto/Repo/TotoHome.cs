@@ -4,28 +4,26 @@ using MVCToto.Models.Toto.Interface;
 
 namespace MVCToto.Models.Toto.Repo {
     public class TotoHome : ITotoHome {
-        private ITotoAlaptipp _alaptipp;
+        private ITotoAlapTipp _alapTipp;
 
         //Generáláshoz local
         private readonly TotoEgyOszlop _locEgyOszlop;
         private readonly TotoTippSor _locTippSor;
 
-        public TotoHome( ITotoAlaptipp alaptipp ) {
-            _alaptipp = alaptipp;
-            //_alaptipp = TotoFactory.NewTotoAlapTipp();
+        public TotoHome( ITotoAlapTipp alapTipp ) {
+            _alapTipp = alapTipp;
+            //_alapTipp = TotoFactory.NewTotoAlapTipp();
             _locEgyOszlop = TotoFactory.NewTotoEgyOszlop();
             _locTippSor = TotoFactory.NewTotoTippSor();
         }
 
-        public ITotoAlaptipp GetAlaptipp() {
-            return _alaptipp;
+        public ITotoAlapTipp GetAlaptipp() {
+            return _alapTipp;
         }
-        public void SetAlaptipp( TotoAlapTipp alaptipp ) {
-            if(alaptipp != null)
-                _alaptipp = alaptipp;
-            else
-                _alaptipp = TotoFactory.NewTotoAlapTipp();
+        public void SetAlaptipp( ITotoAlapTipp alapTipp ) {
+            _alapTipp = alapTipp ?? TotoFactory.NewTotoAlapTipp();
         }
+
         public TotoAlapTipp GetAlaptippFromCollection( FormCollection coll ) {
             var alaptipp = TotoFactory.NewTotoAlapTipp();
             for(int i = 1; i < TotoConst.TOTO_SOR + 1; i++) {
@@ -52,28 +50,20 @@ namespace MVCToto.Models.Toto.Repo {
                 // Itt van kész egy oszlop
                 _locTippSor.Add( _locEgyOszlop.Clone() );
             } else {
-                if(_alaptipp.AlapTipp[aktSor].Esely == 0) {
-                    _locEgyOszlop.Set( aktSor, TotoFactory.NewBaseTipp( Basetipp._1 ) );
-                    GenerateAllFromAlaptipp( aktSor + 1 );
-                } else {
-
-                    for(int i = 0; i < _alaptipp.AlapTipp[aktSor].Esely; i++) {
-                        switch(i) {
-                            case 0:
-                                _locEgyOszlop.Set( aktSor, _alaptipp.AlapTipp[aktSor].Tipp1 );
-                                GenerateAllFromAlaptipp( aktSor + 1 );
-                                break;
-                            case 1:
-                                _locEgyOszlop.Set( aktSor, _alaptipp.AlapTipp[aktSor].Tipp2 );
-                                GenerateAllFromAlaptipp( aktSor + 1 );
-                                break;
-                            case 2:
-                                _locEgyOszlop.Set( aktSor, _alaptipp.AlapTipp[aktSor].Tipp3 );
-                                GenerateAllFromAlaptipp( aktSor + 1 );
-                                break;
-                            default:
-                                break;
-                        }
+                for(int i = 0; i < _alapTipp.AlapTipp[aktSor].Esely; i++) {
+                    switch(i) {
+                        case 0:
+                            _locEgyOszlop.Set( aktSor, _alapTipp.AlapTipp[aktSor].Tipp1 );
+                            GenerateAllFromAlaptipp( aktSor + 1 );
+                            break;
+                        case 1:
+                            _locEgyOszlop.Set( aktSor, _alapTipp.AlapTipp[aktSor].Tipp2 );
+                            GenerateAllFromAlaptipp( aktSor + 1 );
+                            break;
+                        case 2:
+                            _locEgyOszlop.Set( aktSor, _alapTipp.AlapTipp[aktSor].Tipp3 );
+                            GenerateAllFromAlaptipp( aktSor + 1 );
+                            break;
                     }
                 }
             }
@@ -81,8 +71,8 @@ namespace MVCToto.Models.Toto.Repo {
         #endregion
 
         public bool IsValidAlaptipp() {
-            for(int i = 1; i < _alaptipp.AlapTipp.Length; i++) {
-                var tipp = _alaptipp.AlapTipp[i];
+            for(int i = 1; i < _alapTipp.AlapTipp.Length; i++) {
+                var tipp = _alapTipp.AlapTipp[i];
                 #region Üres tippek eltüntetése
                 switch(tipp.Esely) {
                     case 3:
@@ -94,12 +84,12 @@ namespace MVCToto.Models.Toto.Repo {
                                 tipp.Tipp1.Tipp = tipp.Tipp2.Tipp;
                                 tipp.Tipp2.Tipp = Basetipp.EMPTY;
                             }
-                            _alaptipp.Set( i, tipp );
+                            _alapTipp.Set( i, tipp );
                         } else {
                             if(tipp.Tipp2.Tipp == Basetipp.EMPTY) {
                                 tipp.Tipp2.Tipp = tipp.Tipp3.Tipp;
                                 tipp.Tipp3.Tipp = Basetipp.EMPTY;
-                                _alaptipp.Set( i, tipp );
+                                _alapTipp.Set( i, tipp );
                             }
                         }
                         break;
@@ -107,7 +97,7 @@ namespace MVCToto.Models.Toto.Repo {
                         if(tipp.Tipp1.Tipp == Basetipp.EMPTY) {
                             tipp.Tipp1.Tipp = tipp.Tipp2.Tipp;
                             tipp.Tipp2.Tipp = Basetipp.EMPTY;
-                            _alaptipp.Set( i, tipp );
+                            _alapTipp.Set( i, tipp );
                         }
                         break;
                     default:
@@ -119,7 +109,7 @@ namespace MVCToto.Models.Toto.Repo {
                 if((tipp.Tipp1.Tipp == tipp.Tipp2.Tipp || tipp.Tipp1.Tipp == tipp.Tipp3.Tipp) && tipp.Tipp1.Tipp != Basetipp.EMPTY) {
                     return false;
                 }
-                if(tipp.Tipp2.Tipp == tipp.Tipp3.Tipp && tipp.Tipp2.Tipp != Basetipp.EMPTY) {
+                if(tipp.Tipp1.Tipp == Basetipp.EMPTY) {
                     return false;
                 }
                 #endregion

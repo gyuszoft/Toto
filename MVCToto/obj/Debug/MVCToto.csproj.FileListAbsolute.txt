@@ -181,3 +181,6 @@ C:\Portable\Google Drive\webfejl\CSharp\Toto\MVCToto\bin\Autofac.Extras.NHiberna
 C:\Portable\Google Drive\webfejl\CSharp\Toto\MVCToto\bin\Autofac.Integration.Mvc.xml
 C:\Portable\Google Drive\webfejl\CSharp\Toto\MVCToto\bin\Iesi.Collections.xml
 C:\Portable\Google Drive\webfejl\CSharp\Toto\MVCToto\bin\NHibernate.xml
+G:\Portable\Google Drive\webfejl\CSharp\Toto\MVCToto\obj\Debug\MVCToto.csprojResolveAssemblyReference.cache
+G:\Portable\Google Drive\webfejl\CSharp\Toto\MVCToto\bin\nunit.framework.dll
+G:\Portable\Google Drive\webfejl\CSharp\Toto\MVCToto\bin\nunit.framework.xml

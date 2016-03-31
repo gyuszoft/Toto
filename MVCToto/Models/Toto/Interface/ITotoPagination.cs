@@ -12,7 +12,11 @@ namespace MVCToto.Models.Toto.Interface {
         int MinX { get;}
         int MaxX { get;}
 
-        //int Count { get; set; }
+        bool FirstEnabled { get; }
+        bool PrevEnabled { get; }
+        bool NextEnabled { get; }
+        bool LastEnabled { get; }
+
         int OnePage { get; set; }
 
         void SetActPage( int actPage );  //Aktuális oldal
